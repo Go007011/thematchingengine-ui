@@ -1,0 +1,147 @@
+---
+layout: default
+permalink: dashboard/deal-intake/index.html
+title: Deal Intake
+description: Deal ingestion workspace for tracking submissions and initial review workflows.
+menu_key: deal-intake
+---
+
+<div class="row row-cards mb-4">
+  <div class="col-12">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Deal intake pipeline</h3>
+        <div class="card-actions">
+          <button class="btn btn-primary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+            New submission
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row row-cards mb-3">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm bg-blue-lt">
+              <div class="card-body">
+                <div class="text-uppercase text-secondary fw-medium mb-1">Pending review</div>
+                <div class="h2 mb-0" data-intake-metric="pending">--</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm bg-azure-lt">
+              <div class="card-body">
+                <div class="text-uppercase text-secondary fw-medium mb-1">In diligence</div>
+                <div class="h2 mb-0" data-intake-metric="diligence">--</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm bg-green-lt">
+              <div class="card-body">
+                <div class="text-uppercase text-secondary fw-medium mb-1">Approved</div>
+                <div class="h2 mb-0" data-intake-metric="approved">--</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm bg-red-lt">
+              <div class="card-body">
+                <div class="text-uppercase text-secondary fw-medium mb-1">Declined</div>
+                <div class="h2 mb-0" data-intake-metric="declined">--</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info" role="alert">
+          <div class="d-flex">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
+            </div>
+            <div>
+              Deal intake tracking is prepared for live data synchronization. Submissions will flow through the platform review workflow.
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Deal name</th>
+                <th>Location</th>
+                <th>Capital required</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th class="w-1"></th>
+              </tr>
+            </thead>
+            <tbody data-intake-list>
+              <tr>
+                <td colspan="6" class="text-center text-secondary py-5">
+                  Waiting for intake data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div class="row row-cards">
+  <div class="col-12 col-xl-8">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Submission workflow</h3>
+      </div>
+      <div class="card-body">
+        <div class="steps steps-vertical">
+          <div class="step-item active">
+            <div class="h4 m-0">Initial submission</div>
+            <div class="text-secondary">Deal details are captured and entered into the intake queue for preliminary review.</div>
+          </div>
+          <div class="step-item">
+            <div class="h4 m-0">Compliance review</div>
+            <div class="text-secondary">Platform team validates submission against regulatory requirements and eligibility criteria.</div>
+          </div>
+          <div class="step-item">
+            <div class="h4 m-0">Due diligence</div>
+            <div class="text-secondary">Financial analysis, documentation verification, and risk assessment are completed.</div>
+          </div>
+          <div class="step-item">
+            <div class="h4 m-0">Approval decision</div>
+            <div class="text-secondary">Final review determines if the opportunity proceeds to the active marketplace.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-12 col-xl-4">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Review statistics</h3>
+      </div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="text-uppercase text-secondary fw-medium mb-2">Average review time</div>
+          <div class="h2 mb-1" data-intake-stat="avgTime">--</div>
+          <div class="text-secondary small">Typical duration from submission to decision</div>
+        </div>
+        <div class="mb-4">
+          <div class="text-uppercase text-secondary fw-medium mb-2">Approval rate</div>
+          <div class="h2 mb-1" data-intake-stat="approvalRate">--</div>
+          <div class="text-secondary small">Percentage of submissions approved for marketplace</div>
+        </div>
+        <div>
+          <div class="text-uppercase text-secondary fw-medium mb-2">This month</div>
+          <div class="h2 mb-1" data-intake-stat="monthlyTotal">--</div>
+          <div class="text-secondary small">Total submissions received this period</div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

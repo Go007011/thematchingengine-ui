@@ -1,13 +1,23 @@
 {
   "overview": {
-    "title": "Dashboard Overview",
+    "title": "Overview",
     "icon": "layout-dashboard",
     "url": "dashboard/overview/index.html"
   },
   "opportunities": {
-    "title": "Deal Opportunities",
+    "title": "Opportunities",
     "icon": "briefcase-2",
     "url": "dashboard/opportunities/index.html"
+  },
+  "deal-intake": {
+    "title": "Deal Intake",
+    "icon": "file-import",
+    "url": "dashboard/deal-intake/index.html"
+  },
+  "funding-desk": {
+    "title": "Funding Desk",
+    "icon": "currency-dollar",
+    "url": "dashboard/funding-desk/index.html"
   },
   "participation": {
     "title": "Participation",
@@ -19,19 +29,9 @@
     "icon": "file-text",
     "url": "dashboard/documents/index.html"
   },
-  "notifications": {
-    "title": "Notifications",
-    "icon": "bell-ringing",
-    "url": "dashboard/notifications/index.html"
-  },
-  "calendar": {
-    "title": "Calendar",
-    "icon": "calendar-event",
-    "url": "dashboard/calendar/index.html"
-  },
   "admin": {
-    "title": "Admin Builder",
-    "icon": "settings-automation",
+    "title": "Admin",
+    "icon": "settings",
     "url": "dashboard/admin/index.html"
   }
 }

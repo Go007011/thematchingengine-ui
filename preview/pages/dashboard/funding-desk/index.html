@@ -1,0 +1,156 @@
+---
+layout: default
+permalink: dashboard/funding-desk/index.html
+title: Funding Desk
+description: Capital allocation workspace for managing funding operations and commitment tracking.
+menu_key: funding-desk
+---
+
+<div class="row row-cards mb-4">
+  <div class="col-12 col-xl-8">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Capital allocation overview</h3>
+        <div class="card-actions text-secondary small">Last updated <span data-last-updated></span></div>
+      </div>
+      <div class="card-body">
+        <div class="row row-cards mb-3">
+          <div class="col-md-4">
+            <div class="border rounded-3 p-3 h-100 bg-primary-lt">
+              <div class="text-uppercase text-secondary fw-medium mb-2">Total deployed</div>
+              <div class="h2 mb-1" data-funding-metric="deployed">--</div>
+              <div class="text-secondary small">Committed capital across active deals</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded-3 p-3 h-100 bg-success-lt">
+              <div class="text-uppercase text-secondary fw-medium mb-2">Available</div>
+              <div class="h2 mb-1" data-funding-metric="available">--</div>
+              <div class="text-secondary small">Unallocated capital ready for deployment</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded-3 p-3 h-100 bg-info-lt">
+              <div class="text-uppercase text-secondary fw-medium mb-2">Pipeline</div>
+              <div class="h2 mb-1" data-funding-metric="pipeline">--</div>
+              <div class="text-secondary small">Pending commitments under review</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-vcenter">
+            <thead>
+              <tr>
+                <th>Deal</th>
+                <th>Allocated</th>
+                <th>Committed</th>
+                <th>Status</th>
+                <th>Close date</th>
+                <th class="w-1"></th>
+              </tr>
+            </thead>
+            <tbody data-funding-list>
+              <tr>
+                <td colspan="6" class="text-center text-secondary py-5">
+                  Waiting for funding desk data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-12 col-xl-4">
+    <article class="card mb-3">
+      <div class="card-header">
+        <h3 class="card-title">Deployment metrics</h3>
+      </div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="text-uppercase text-secondary fw-medium mb-2">Utilization rate</div>
+          <div class="progress progress-sm mb-2">
+            <div class="progress-bar" style="width: 0%" data-funding-progress="utilization"></div>
+          </div>
+          <div class="text-secondary small"><span data-funding-stat="utilization">--</span> of total capital deployed</div>
+        </div>
+        <div class="mb-4">
+          <div class="text-uppercase text-secondary fw-medium mb-2">Active deals</div>
+          <div class="h2 mb-1" data-funding-stat="activeDeals">--</div>
+          <div class="text-secondary small">Opportunities with committed capital</div>
+        </div>
+        <div>
+          <div class="text-uppercase text-secondary fw-medium mb-2">Avg. allocation</div>
+          <div class="h2 mb-1" data-funding-stat="avgAllocation">--</div>
+          <div class="text-secondary small">Mean capital commitment per deal</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-body">
+        <div class="alert alert-warning mb-0" role="alert">
+          <div class="d-flex">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+            </div>
+            <div>
+              <h4 class="alert-title">Capital threshold</h4>
+              <div class="text-secondary">Available funding approaching minimum operational reserve.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div class="row row-cards">
+  <div class="col-12 col-xl-6">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Commitment workflow</h3>
+      </div>
+      <div class="card-body">
+        <p class="text-secondary mb-3">
+          Capital commitments flow through a multi-stage approval process before funds are allocated to opportunities.
+        </p>
+        <div class="steps steps-vertical steps-green">
+          <div class="step-item active">
+            <div class="h5 m-0">Opportunity selection</div>
+            <div class="text-secondary small">Investment committee reviews and approves deal for funding consideration.</div>
+          </div>
+          <div class="step-item">
+            <div class="h5 m-0">Capital allocation</div>
+            <div class="text-secondary small">Funding amount is determined and reserved from available capital pool.</div>
+          </div>
+          <div class="step-item">
+            <div class="h5 m-0">Legal review</div>
+            <div class="text-secondary small">Documentation and compliance verification before commitment finalization.</div>
+          </div>
+          <div class="step-item">
+            <div class="h5 m-0">Deployment</div>
+            <div class="text-secondary small">Capital is transferred and commitment becomes active in the system.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-12 col-xl-6">
+    <article class="card">
+      <div class="card-header">
+        <h3 class="card-title">Recent activity</h3>
+      </div>
+      <div class="card-body">
+        <div class="divide-y" data-funding-activity>
+          <div class="py-3 text-center text-secondary">
+            Waiting for activity data...
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

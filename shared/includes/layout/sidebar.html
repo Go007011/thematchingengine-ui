@@ -1,38 +1,32 @@
-<header class="navbar navbar-expand-lg navbar-dark navbar-overlap-shell d-print-none">
-  <div class="container-xl">
+<aside class="navbar navbar-vertical navbar-expand-lg navbar-dark d-print-none">
+  <div class="container-fluid">
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#dashboard-navbar"
-      aria-controls="dashboard-navbar"
+      data-bs-target="#sidebar-menu"
+      aria-controls="sidebar-menu"
       aria-expanded="false"
-      aria-label="Toggle dashboard navigation"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand navbar-brand-autodark pe-lg-4" href="{{ page | relative }}/dashboard/overview/index.html">
-      <div class="brand-mark">TM</div>
-      <div>
-        <div class="brand-title">{{ site.title }}</div>
-        <div class="brand-subtitle">Tabler shell ready</div>
-      </div>
-    </a>
-    <div class="navbar-nav flex-row order-lg-last">
-      <div class="nav-item d-flex align-items-center">
-        <div class="navbar-shell-status">
-          <div class="text-uppercase text-blue-200 small">Deployment readiness</div>
-          <div class="fw-semibold text-white">Configured</div>
+    <h1 class="navbar-brand navbar-brand-autodark">
+      <a href="{{ page | relative }}/dashboard/overview/index.html" class="sidebar-brand-link">
+        <div class="brand-mark">CM</div>
+        <div class="sidebar-brand-text">
+          <div class="brand-title">{{ site.title }}</div>
+          <div class="brand-subtitle">Command Center</div>
         </div>
-      </div>
-    </div>
-    <div class="collapse navbar-collapse" id="dashboard-navbar">
-      <ul class="navbar-nav">
+      </a>
+    </h1>
+    <div class="collapse navbar-collapse" id="sidebar-menu">
+      <ul class="navbar-nav pt-lg-3">
         {% for item in menu %}
         {% assign key = item[0] %}
         {% assign entry = item[1] %}
         <li class="nav-item{% if key == menu_key %} active{% endif %}">
-          <a class="nav-link module-nav-link" href="{{ page | relative }}/{{ entry.url }}" data-nav-link>
+          <a class="nav-link" href="{{ page | relative }}/{{ entry.url }}" data-nav-link>
             <span class="nav-link-icon d-md-none d-lg-inline-block">
               {% include "ui/icon.html" icon=entry.icon %}
             </span>
@@ -41,6 +35,13 @@
         </li>
         {% endfor %}
       </ul>
+      <div class="sidebar-status mt-auto">
+        <div class="sidebar-status-label">System Status</div>
+        <div class="sidebar-status-value">
+          <span class="status-dot status-dot-animated bg-success"></span>
+          <span>Operational</span>
+        </div>
+      </div>
     </div>
   </div>
-</header>
+</aside>
