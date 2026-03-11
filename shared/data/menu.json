@@ -33,5 +33,10 @@
     "title": "Admin",
     "icon": "settings",
     "url": "dashboard/admin/index.html"
+  },
+  "api-testing": {
+    "title": "API Testing",
+    "icon": "code",
+    "url": "dashboard/api-testing/index.html"
   }
 }

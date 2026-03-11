@@ -1,0 +1,185 @@
+---
+layout: default
+permalink: dashboard/api-testing/index.html
+title: API Testing Panel
+description: Test server functions and view JSON responses
+menu_key: api-testing
+---
+
+<div class="row row-deck row-cards mb-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Server Function Testing</h3>
+        <div class="card-subtitle">Test edge functions and view responses</div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <button id="btn-match" class="btn btn-primary w-100" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" /><path d="M13 7l0 .01" /><path d="M17 7l0 .01" /><path d="M17 11l0 .01" /><path d="M17 15l0 .01" /></svg>
+              Match Opportunities
+            </button>
+          </div>
+          <div class="col-12 col-md-4">
+            <button id="btn-participate" class="btn btn-success w-100" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 12l2 2l4 -4" /></svg>
+              Submit Participation
+            </button>
+          </div>
+          <div class="col-12 col-md-4">
+            <button id="btn-analytics" class="btn btn-info w-100" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M9 8m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M15 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg>
+              Generate Analytics
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row row-deck row-cards">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Response Output</h3>
+        <div class="card-actions">
+          <button id="btn-clear" class="btn btn-sm btn-outline-secondary" type="button">Clear</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="loading-indicator" class="text-center py-5" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="mt-3 text-secondary">Processing request...</div>
+        </div>
+        <div id="response-container">
+          <div class="text-center text-secondary py-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg mb-3 opacity-50" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 8l-4 4l4 4" /><path d="M17 8l4 4l-4 4" /><path d="M14 4l-4 16" /></svg>
+            <div>Click a button above to test a server function</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+  const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  const responseContainer = document.getElementById('response-container');
+  const loadingIndicator = document.getElementById('loading-indicator');
+
+  function showLoading() {
+    loadingIndicator.style.display = 'block';
+    responseContainer.style.display = 'none';
+  }
+
+  function hideLoading() {
+    loadingIndicator.style.display = 'none';
+    responseContainer.style.display = 'block';
+  }
+
+  function displayResponse(title, data, isError = false) {
+    hideLoading();
+    const statusClass = isError ? 'danger' : 'success';
+    const icon = isError ? 'alert-circle' : 'check';
+
+    responseContainer.innerHTML = `
+      <div class="alert alert-${statusClass} mb-3">
+        <div class="d-flex align-items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+          <strong>${title}</strong>
+        </div>
+      </div>
+      <div class="bg-dark text-white p-3 rounded" style="font-family: monospace; font-size: 0.875rem; overflow-x: auto;">
+        <pre class="mb-0">${JSON.stringify(data, null, 2)}</pre>
+      </div>
+    `;
+  }
+
+  async function callEdgeFunction(functionName, payload = {}) {
+    showLoading();
+
+    try {
+      const url = `${SUPABASE_URL}/functions/v1/${functionName}`;
+      const headers = {
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+      };
+
+      const options = {
+        method: payload.method || 'POST',
+        headers,
+      };
+
+      if (payload.method !== 'GET' && payload.body) {
+        options.body = JSON.stringify(payload.body);
+      } else if (payload.method === 'GET' && payload.params) {
+        const params = new URLSearchParams(payload.params);
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url, options);
+      const data = await response.json();
+
+      if (!response.ok) {
+        displayResponse(`Error: ${functionName}`, data, true);
+      } else {
+        displayResponse(`Success: ${functionName}`, data, false);
+      }
+    } catch (error) {
+      displayResponse('Request Failed', {
+        error: error.message,
+        details: 'Could not connect to the server function'
+      }, true);
+    }
+  }
+
+  document.getElementById('btn-match').addEventListener('click', () => {
+    callEdgeFunction('match-opportunities', {
+      method: 'POST',
+      body: {
+        organizationId: 'test-org-123',
+        criteria: {
+          minAmount: 100000,
+          maxAmount: 5000000,
+          sector: 'technology'
+        }
+      }
+    });
+  });
+
+  document.getElementById('btn-participate').addEventListener('click', () => {
+    callEdgeFunction('submit-participation', {
+      method: 'POST',
+      body: {
+        opportunityId: 'test-opp-123',
+        organizationId: 'test-org-123',
+        amount: 250000,
+        notes: 'Test participation submission'
+      }
+    });
+  });
+
+  document.getElementById('btn-analytics').addEventListener('click', () => {
+    callEdgeFunction('analytics-report', {
+      method: 'GET',
+      params: {
+        organizationId: 'test-org-123'
+      }
+    });
+  });
+
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    responseContainer.innerHTML = `
+      <div class="text-center text-secondary py-5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg mb-3 opacity-50" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 8l-4 4l4 4" /><path d="M17 8l4 4l-4 4" /><path d="M14 4l-4 16" /></svg>
+        <div>Click a button above to test a server function</div>
+      </div>
+    `;
+  });
+</script>
