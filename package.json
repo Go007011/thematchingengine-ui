@@ -6,8 +6,7 @@
     "preview"
   ],
   "scripts": {
-    "build": "turbo build",
-    "postbuild": "node .build/prepare-bolt-dist.mjs",
+    "build": "turbo run build && node .build/prepare-bolt-dist.mjs",
     "preview": "serve dist -l 4173",
     "dev": "turbo dev",
     "clean": "turbo clean",

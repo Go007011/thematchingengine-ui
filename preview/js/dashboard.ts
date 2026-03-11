@@ -133,21 +133,16 @@ const updateStatus = (label: string, detail: string, accent: 'blue' | 'green' | 
   }
 }
 
-const setCardContent = (cardKey: string, metric: string, description: string) => {
+const setCardContent = (cardKey: string, metric: string) => {
   const card = document.querySelector<HTMLElement>(`[data-dashboard-card="${cardKey}"]`)
   if (!card) {
     return
   }
 
   const metricNode = card.querySelector<HTMLElement>('[data-card-metric]')
-  const descriptionNode = card.querySelector<HTMLElement>('[data-card-description]')
 
   if (metricNode) {
     metricNode.textContent = metric
-  }
-
-  if (descriptionNode) {
-    descriptionNode.textContent = description
   }
 }
 
@@ -752,6 +747,77 @@ const upsertChart = (key: string, targetSelector: string, options: ApexCharts.Ap
   void chart.render()
 }
 
+const renderPipelineActivityChart = (summary: Record<string, unknown> | null, charts: Record<string, unknown>) => {
+  const primary = getComputedStyle(document.documentElement).getPropertyValue('--tblr-primary').trim() || '#206bc4'
+  const success = getComputedStyle(document.documentElement).getPropertyValue('--tblr-success').trim() || '#2fb344'
+  const info = getComputedStyle(document.documentElement).getPropertyValue('--tblr-info').trim() || '#4299e1'
+  const axisColor = 'rgba(82, 95, 127, 0.72)'
+
+  const pipelineData = buildLineChartSeries(summary, charts)
+
+  upsertChart('pipeline-activity', '#chart-pipeline-activity', {
+    chart: {
+      type: 'area',
+      height: 320,
+      toolbar: { show: false },
+      zoom: { enabled: false },
+      fontFamily: 'Geist, sans-serif'
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2
+    },
+    series: [
+      {
+        name: 'Pipeline Activity',
+        data: pipelineData.values
+      }
+    ],
+    colors: [primary],
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.4,
+        opacityTo: 0.1,
+        stops: [0, 90, 100]
+      }
+    },
+    grid: {
+      borderColor: 'rgba(0, 0, 0, 0.05)',
+      strokeDashArray: 4
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      categories: pipelineData.categories,
+      labels: {
+        style: {
+          colors: pipelineData.categories.map(() => axisColor),
+          fontSize: '12px'
+        }
+      },
+      axisBorder: { show: false },
+      axisTicks: { show: false }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: [axisColor],
+          fontSize: '12px'
+        }
+      }
+    },
+    tooltip: {
+      theme: 'light',
+      x: {
+        show: true
+      }
+    }
+  })
+}
+
 const renderOverviewCharts = (summary: Record<string, unknown> | null, charts: Record<string, unknown>) => {
   const primary = getComputedStyle(document.documentElement).getPropertyValue('--tblr-primary').trim() || '#206bc4'
   const success = getComputedStyle(document.documentElement).getPropertyValue('--tblr-success').trim() || '#2fb344'
@@ -1088,6 +1154,7 @@ const loadDashboardData = async (endpoint: string, enforcementEndpoint = '') => 
       [],
       'The dashboard is using built-in shell content until the system connection is configured.'
     )
+    renderPipelineActivityChart(null, {})
     renderOverviewCharts(null, {})
     renderOpportunityCards([])
     renderOpportunityTable([])
@@ -1108,6 +1175,7 @@ const loadDashboardData = async (endpoint: string, enforcementEndpoint = '') => 
       [],
       'The dashboard is using built-in shell content until the system connection is configured.'
     )
+    renderPipelineActivityChart(null, {})
     renderOverviewCharts(null, {})
     renderOpportunityCards([])
     renderOpportunityTable([])
@@ -1136,6 +1204,7 @@ const loadDashboardData = async (endpoint: string, enforcementEndpoint = '') => 
       [],
       'Live platform activity could not be reached, so the dashboard stayed on its fallback shell content.'
     )
+    renderPipelineActivityChart(null, {})
     renderOverviewCharts(null, {})
     renderOpportunityCards([])
     renderOpportunityTable([])
@@ -1179,6 +1248,7 @@ const loadDashboardData = async (endpoint: string, enforcementEndpoint = '') => 
     warningCount: warnings.length,
     endpointConfigured: payload.isConfigured
   })
+  renderPipelineActivityChart(payload.summary.data, charts)
   renderOverviewCharts(payload.summary.data, charts)
   renderOpportunityCards(deals)
   renderOpportunityTable(deals)
@@ -1395,42 +1465,19 @@ const applyOverviewCards = (
     return
   }
 
-  const totalDeals = Number(summary?.totalDeals ?? 0)
-  const activeDeals = Number(summary?.activeDeals ?? summary?.totalDeals ?? 0)
-  const totalParticipation = Number(summary?.totalParticipation ?? summary?.totalOrders ?? 0)
+  const totalOpportunities = Number(summary?.totalDeals ?? summary?.activeDeals ?? 0)
+  const totalDealsSubmitted = Number(summary?.totalOrders ?? summary?.totalParticipation ?? 0)
+  const fundingRequests = Number(summary?.totalSPVs ?? summary?.totalSpvs ?? 0)
+  const activeParticipants = Number(summary?.totalInvestors ?? 0)
   const totalDocuments = Number(summary?.totalDocuments ?? summary?.sentMailDeals ?? 0)
-  const notifications = Number(summary?.notifications ?? context.warningCount)
-  const systemHealth = Number(
-    summary?.systemHealth ??
-      (context.endpointConfigured ? Math.round((context.connectedDatasets / 5) * 100) : 0)
-  )
+  const adminControls = context.endpointConfigured ? 100 : 0
 
-  setCardContent('deals', formatNumber(totalDeals), `${formatNumber(activeDeals)} active opportunities`)
-  setCardContent(
-    'service-connectors',
-    formatNumber(context.connectedDatasets),
-    context.connectedDatasets > 0 ? 'Data Sources Active' : 'Waiting for data sources'
-  )
-  setCardContent(
-    'data-readiness',
-    formatPercent(systemHealth),
-    systemHealth >= 100 ? '100% data sources active' : 'Data sources still synchronizing'
-  )
-  setCardContent(
-    'documents',
-    formatNumber(totalDocuments),
-    `${formatNumber(totalDocuments)} records ready for deal ingestion`
-  )
-  setCardContent(
-    'participation',
-    formatNumber(totalParticipation),
-    `${formatNumber(totalParticipation)} participation records tracked`
-  )
-  setCardContent(
-    'notifications',
-    formatNumber(notifications),
-    `${formatNumber(notifications)} operations alerts in the system`
-  )
+  setCardContent('opportunities', formatNumber(totalOpportunities))
+  setCardContent('deals-submitted', formatNumber(totalDealsSubmitted))
+  setCardContent('funding-requests', formatNumber(fundingRequests))
+  setCardContent('participants', formatNumber(activeParticipants))
+  setCardContent('documents', formatNumber(totalDocuments))
+  setCardContent('admin-controls', formatNumber(adminControls))
 }
 
 const bootDashboard = async () => {
